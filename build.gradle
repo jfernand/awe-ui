@@ -1,0 +1,76 @@
+
+
+buildscript {
+//	ext {
+//		springBootVersion = '2.0.0.M3'
+//	}
+	repositories {
+		mavenCentral()
+        maven {
+            url 'http://repo.spring.io/milestone'
+        }
+        maven {
+            url 'http://repo.spring.io/libs'
+        }
+	}
+}
+
+plugins {
+    id 'org.springframework.boot' version '1.5.8.RELEASE'
+    id 'nu.studer.jooq' version '2.0.9'
+    id 'io.spring.dependency-management' version '1.0.3.RELEASE'
+    id 'java'
+}
+
+group = 'org.cr'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+ext {
+//	springCloudVersion = 'Dalston.SR4'
+	vaadinVersion = '8.1.0'
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+//	compile('org.activiti:activiti-spring-boot-starter-basic:5.21.0')
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+//	compile('org.apache.camel:camel-spring-boot-starter:2.19.3')
+//	compile('org.springframework.cloud:spring-cloud-starter-consul-config')
+//	compile('org.springframework.cloud:spring-cloud-starter-consul-discovery')
+//	compile('org.springframework.cloud:spring-cloud-stream-binder-kafka')
+//	compile('org.springframework.boot:spring-boot-starter-data-cassandra')
+//    compile('org.springframework.boot:spring-boot-starter-data-redis')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+//    compile("com.h2database:h2")
+//    compile('org.springframework.boot:spring-boot-starter-jooq')
+//    compile('org.springframework:spring-orm')
+	compile('com.vaadin:vaadin-spring-boot-starter')
+//  compile('org.hibernate:hibernate-entitymanager:4.0.0.Final')
+//	compile('org.springframework.boot:spring-boot-starter-websocket')
+//	compile('org.springframework.boot:spring-boot-starter-cloud-connectors')
+	compile('org.jolokia:jolokia-core')
+    compile('de.codecentric:spring-boot-admin-server:1.5.4')
+    compile('de.codecentric:spring-boot-admin-server-ui:1.5.4')
+    compile('de.codecentric:spring-boot-admin-starter-client:1.5.4')
+    compile('com.hazelcast:hazelcast')
+//	compile('org.springframework.cloud:spring-cloud-cloudfoundry-connector')
+//	compile('org.springframework.cloud:spring-cloud-starter-config')
+//	compile('org.springframework.cloud:spring-cloud-spring-service-connector')
+	runtime('org.springframework.boot:spring-boot-devtools')
+	runtime('com.h2database:h2')
+
+//	runtime('mysql:mysql-connector-java')
+	compileOnly('org.projectlombok:lombok:1.16.16')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+	}
+}
+
+springBoot {
+    buildInfo()
+}
