@@ -36,10 +36,10 @@ public class RheosApplication {
 			log.info("");
 
 			// fetch an individual customer by ID
-			Customer customer = repository.findOne(1L);
+//			Customer customer = repository.findOne(1L);
 			log.info("Customer found with findOne(1L):");
 			log.info("--------------------------------");
-			log.info(customer.toString());
+//			log.info(customer.toString());
 			log.info("");
 
 			// fetch customers by last name
@@ -48,6 +48,8 @@ public class RheosApplication {
 			for (Customer bauer : repository
 					.findByLastNameStartsWithIgnoreCase("Bauer")) {
 				log.info(bauer.toString());
+//				bauer.setFirstName("Dickhead");
+//				repository.save(bauer);
 			}
 			log.info("");
 		};

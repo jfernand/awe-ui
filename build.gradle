@@ -59,6 +59,9 @@ dependencies {
 //	compile('org.springframework.cloud:spring-cloud-starter-config')
 //	compile('org.springframework.cloud:spring-cloud-spring-service-connector')
 	runtime('org.springframework.boot:spring-boot-devtools')
+    compile("org.hibernate:hibernate-validator")
+    compile("org.hibernate:hibernate-envers")
+
 //	runtime('com.h2database:h2')
 
  	compile('mysql:mysql-connector-java')

@@ -34,7 +34,7 @@ public class Admin extends UI {
 
         main.setSizeFull();
         grid.setSizeFull();
-        grid.setColumns("firstName", "lastName", "email", "birthday");
+        grid.setColumns("id", "firstName", "lastName", "email", "birthday");
         grid.setHeight(300, Unit.PIXELS);
 
         form.setVisible(false);
@@ -47,7 +47,7 @@ public class Admin extends UI {
         });
 
         form.setChangeHandler(() -> {
-            form.setVisible(false);
+//            form.setVisible(false);
             listCustomers();
         });
 
