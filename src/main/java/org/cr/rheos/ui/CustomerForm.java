@@ -13,13 +13,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.cr.rheos.entity.Customer;
 import org.cr.rheos.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @SpringComponent
 @UIScope
@@ -31,7 +29,7 @@ public class CustomerForm extends FormLayout {
     private final Binder<Customer> binder = new Binder<>(Customer.class);
     private CustomerRepository repo;
 
-    private final TextField uuid = new TextField("Id");
+//    private final TextField customerId = new TextField("Id");
     private final TextField firstName = new TextField("First name");
     private final TextField lastName = new TextField("Last name");
     private final TextField email = new TextField("Email");
@@ -63,22 +61,10 @@ public class CustomerForm extends FormLayout {
                 return LocalDate.parse(value);
             }
         }).bind(Customer::getBirthday, Customer::setBirthday);
-        binder.forField(uuid).withConverter(new Converter<String, UUID>() {
-            @Override
-            public Result<UUID> convertToModel(String value, ValueContext context) {
-                return Result.ok(UUID.fromString(value));
-            }
-
-            @Override
-            public String convertToPresentation(UUID value, ValueContext context) {
-                return value.toString();
-            }
-        }).bind(Customer::getId, Customer::setId);
         binder.bindInstanceFields(this);
 
-        val buttons = new HorizontalLayout(save, delete);
-        addComponents(uuid,firstName, lastName, email, birthday, buttons);
-//        setSpacing(true);
+        HorizontalLayout buttons = new HorizontalLayout(save, delete);
+        addComponents(firstName, lastName, email, birthday, buttons);
         setSizeUndefined();
         setVisible(true);
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);

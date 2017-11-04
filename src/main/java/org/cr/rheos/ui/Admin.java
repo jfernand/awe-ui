@@ -4,8 +4,9 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.*;
-import lombok.val;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.UI;
 import org.cr.rheos.entity.Customer;
 import org.cr.rheos.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class Admin extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        val main = new HorizontalLayout();
+        HorizontalLayout main = new HorizontalLayout();
         setContent(main);
         main.addComponents(grid, form);
 
@@ -46,10 +47,8 @@ public class Admin extends UI {
             }
         });
 
-        form.setChangeHandler(() -> {
-//            form.setVisible(false);
-            listCustomers();
-        });
+        //            form.setVisible(false);
+        form.setChangeHandler(this::listCustomers);
 
         main.setExpandRatio(grid, 1);
         listCustomers();

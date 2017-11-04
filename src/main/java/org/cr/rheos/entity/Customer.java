@@ -8,18 +8,18 @@ import org.springframework.data.domain.Persistable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.UUID;
 
 @Entity
 @Data
 @Audited
-public class Customer implements Persistable<UUID>{
+public class Customer implements Persistable<Long>{
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
+    private Long customerId;
     private String firstName;
     private String lastName;
     @Email
@@ -29,7 +29,7 @@ public class Customer implements Persistable<UUID>{
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return customerId.hashCode();
     }
 
     protected Customer() {
@@ -47,11 +47,16 @@ public class Customer implements Persistable<UUID>{
 
         Customer customer = (Customer) o;
 
-        return id.equals(customer.id);
+        return customerId.equals(customer.customerId);
+    }
+
+    @Override
+    public Long getId() {
+        return customerId;
     }
 
     @Override
     public boolean isNew() {
-        return id == null;
+        return customerId == null;
     }
 }
