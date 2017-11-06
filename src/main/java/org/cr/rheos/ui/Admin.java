@@ -2,59 +2,68 @@ package org.cr.rheos.ui;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
-import org.cr.rheos.entity.Customer;
-import org.cr.rheos.repository.CustomerRepository;
+import com.vaadin.ui.VerticalLayout;
+import lombok.val;
+import org.cr.rheos.hybridmenu.HybridMenu;
+import org.cr.rheos.hybridmenu.builder.HybridMenuBuilder;
+import org.cr.rheos.hybridmenu.builder.left.LeftMenuButtonBuilder;
+import org.cr.rheos.hybridmenu.components.NotificationCenter;
+import org.cr.rheos.hybridmenu.data.DesignItem;
+import org.cr.rheos.hybridmenu.data.MenuConfig;
+import org.cr.rheos.hybridmenu.data.enums.EMenuComponents;
+import org.cr.rheos.hybridmenu.data.leftmenu.MenuButton;
+import org.cr.rheos.ui.models.MainModel;
+import org.cr.rheos.ui.views.impl.vaadin.MainViewImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 @SpringUI
 @Title("Admin")
-@Theme("valo")
+@Theme("menu")
 public class Admin extends UI {
-    private Grid<Customer> grid;
-    private CustomerRepository repo;
-    private CustomerForm form;
+    private final MainModel model;
+    private NotificationCenter notiCenter;
 
     @Autowired
-    public Admin(CustomerRepository repo, CustomerForm form) {
-        this.repo = repo;
-        this.grid = new Grid<>(Customer.class);
-        this.form = form;
+    public Admin( MainModel model) {
+        this.model = model;
     }
 
     @Override
     protected void init(VaadinRequest request) {
-        HorizontalLayout main = new HorizontalLayout();
-        setContent(main);
-        main.addComponents(grid, form);
+        MenuConfig menuConfig = new MenuConfig();
+        menuConfig.setDesignItem(DesignItem.getDarkDesign());
+        notiCenter = new NotificationCenter(5000);
 
-        main.setSizeFull();
-        grid.setSizeFull();
-        grid.setColumns("id", "firstName", "lastName", "email", "birthday");
-        grid.setHeight(300, Unit.PIXELS);
+        val layout = new VerticalLayout();
+//        layout.setSizeUndefined();
+//        layout.setMargin(false);
 
-        form.setVisible(false);
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            if (event.getValue() == null) {
-                form.setVisible(false);
-            } else {
-                form.setCustomer(event.getValue());
-            }
-        });
+        HybridMenu menu = HybridMenuBuilder.get()
+            .setContent(layout)
+            .setMenuComponent(EMenuComponents.LEFT_WITH_TOP)
+            .setConfig(menuConfig)
+            .withNotificationCenter(notiCenter)
+            .build();
 
-        //            form.setVisible(false);
-        form.setChangeHandler(this::listCustomers);
+        val view = new MainViewImpl();
+        UI.getCurrent().getNavigator().addView("main", view);
 
-        main.setExpandRatio(grid, 1);
-        listCustomers();
-    }
+        MenuButton homeButton = LeftMenuButtonBuilder.get()
+            .withCaption("Home")
+            .withIcon(VaadinIcons.HOME)
+            .withNavigateTo("main")
+            .build();
+        menu.addLeftMenuButton(homeButton);
 
-    private void listCustomers() {
-        grid.setItems(repo.findAll());
+        setContent(menu);
+        VaadinSession.getCurrent().setAttribute(HybridMenu.class, menu);
+
+        new MainPresenter(model, view);
     }
 }

@@ -1,0 +1,703 @@
+@import "hybridmenu-builder";
+
+@mixin hybrid-menu {
+  .hybridMenu {
+    z-index: 1;
+
+    .v-slot-hideDesignSettings {
+      position: fixed !important;
+      right: 0 !important;
+      top: 0 !important;
+      width: 0px !important;
+      height: 0px !important;
+      overflow: hidden !important;
+    }
+
+    .menuButton:focus {
+      outline: none;
+    }
+
+    .v-slot-contentBox {
+      overflow: auto;
+    }
+
+    .contentBox {
+      padding: 15px !important;
+    }
+
+    .v-slot-notificationList {
+      position: fixed !important;
+      right: 0 !important;
+      top: 0 !important;
+      width: auto !important;
+      height: auto !important;
+      overflow: auto !important;
+      max-height: 100%;
+    }
+
+    .topMenu .v-slot-notificationList {
+      top: 50px !important;
+      max-height: calc(100% - 50px) !important;
+      margin: 8px 0 0;
+
+      .v-slot-notificationItem {
+        transform: scale(0);
+        transition: transform 0.5s ease-in-out, height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+        height: 0;
+        opacity: 0;
+        width: 300px;
+        overflow: hidden;
+        margin: 7px 15px;
+
+        .notificationItem.notificationItemWithIcon {
+          padding-left: 43px !important;
+        }
+
+        .notificationItem.notificationItemWithIcon:before {
+          content: '';
+          position: absolute;
+          border-left: 1px solid;
+          height: calc(100% - 10px);
+        }
+      }
+
+      .v-slot-notificationItem > .v-widget:not(.v-csslayout) {
+        display: block !important;
+      }
+
+      .v-slot-notificationItem > .v-widget:not(.v-csslayout) > .v-caption {
+        position: absolute;
+        z-index: 10001;
+        font-size: 23px;
+        padding: 15px 10px;
+      }
+
+      .v-slot-notificationItem.v-slot-notificationItemShow {
+        opacity: 1;
+        transform: scale(1);
+        height: 83px;
+      }
+    }
+
+    /* Notification */
+    .notificationItem {
+      padding: 5px;
+      display: block;
+      border-radius: 3px;
+      position: relative;
+      width: calc(100% - 10px);
+
+      .v-caption {
+        display: block;
+
+        .v-captiontext {
+          font-size: 18px;
+          margin: 0 0 0 7px;
+
+          p.timeAgo {
+            display: inline-block;
+            margin: 6px 0 0 7px;
+            font-size: 10px;
+            position: absolute;
+          }
+
+          p.timeAgo:before {
+            content: '';
+            display: inline-block;
+            border-radius: 50%;
+            height: 4px;
+            width: 4px;
+            margin: 0 7px 1px 0;
+          }
+        }
+      }
+
+      .v-label {
+        display: block;
+        margin: 0 7px 3px;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      .notificationItemCloseButton {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 12px;
+        height: 20px;
+        width: 25px;
+        cursor: pointer;
+        border-radius: 0 3px 0 3px;
+
+        span.v-icon {
+          padding: 6px;
+          transition: color 0.3s ease-in-out;
+          border-radius: 0 3px 0 3px;
+        }
+
+        span.notificationItemCloseButton-caption {
+          display: none !important;
+        }
+      }
+    }
+
+    /* Left Menu */
+    .leftMenu {
+      padding: 0 !important;
+      z-index: 100;
+      position: relative;
+      -webkit-transition: width 0.75s ease-in-out;
+      -moz-transition: width 0.75s ease-in-out;
+      -o-transition: width 0.75s ease-in-out;
+      transition: width 0.75s ease-in-out;
+
+      .v-slot {
+        height: auto !important;
+      }
+
+      .menuButton {
+        background: transparent;
+        display: block;
+        cursor: pointer;
+        -webkit-transition: background 0.3s, border-left 0.3s, height 0.5s;
+        -moz-transition: background 0.3s, border-left 0.3s, height 0.5s;
+        -o-transition: background 0.3s, border-left 0.3s, height 0.5s;
+        transition: background 0.3s, border-left 0.3s, height 0.5s;
+        border-left: 0 solid transparent;
+        overflow: hidden;
+        text-align: center;
+        vertical-align: center;
+      }
+
+      .menuButton.active {
+        border-left-width: 3px;
+      }
+
+      .menuButton:hover, .menuButton.active:hover {
+        border-left-width: 5px;
+      }
+
+      .menuButton-wrap {
+        display: block;
+        transition: border 0.3s;
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%); /* IE10 is actually unprefixed */
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+
+      .menuButton-wrap .v-icon {
+        margin-left: 10px;
+        width: 25px;
+        text-align: center;
+      }
+
+      .menuButton-wrap .menuButton-caption {
+        font-size: 17px;
+      }
+
+      .menuButton.subMenuButton .menuButton-caption .v-icon {
+        position: absolute;
+        right: 5px;
+        margin: 0;
+        height: 30px;
+        width: 30px;
+        -webkit-transition: transform 0.3s ease-in-out;
+        -moz-transition: transform 0.3s ease-in-out;
+        -o-transition: transform 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
+        -webkit-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -ms-transform: rotate(0deg); /* IE10 is actually unprefixed */
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+
+      .menuButton.subMenuButton.active .menuButton-caption .v-icon {
+        -webkit-transform: rotate(-180deg);
+        -moz-transform: rotate(-180deg);
+        -ms-transform: rotate(-180deg); /* IE10 is actually unprefixed */
+        -o-transform: rotate(-180deg);
+        transform: rotate(-180deg);
+      }
+
+      .hybridMenu .centralContent .v-expand {
+        -webkit-transition: padding-left 0.75s ease-in-out;
+        -moz-transition: padding-left 0.75s ease-in-out;
+        -o-transition: padding-left 0.75s ease-in-out;
+        transition: padding-left 0.75s ease-in-out;
+        z-index: 10;
+      }
+
+      .hybridMenu .centralContent .v-expand .v-expand {
+        transition: unset;
+      }
+
+      .hybridMenu .v-slot-leftMenu {
+        -webkit-transition: margin-left 0.75s ease-in-out;
+        -moz-transition: margin-left 0.75s ease-in-out;
+        -o-transition: margin-left 0.75s ease-in-out;
+        transition: margin-left 0.75s ease-in-out;
+      }
+
+      .menuSubMenuContent {
+        border-left: 1px solid transparent;
+        margin-left: 24px;
+        width: calc(100% - 24px) !important;
+      }
+
+      .v-slot-menuSubMenuContent {
+        position: relative;
+        overflow: hidden;
+        display: block;
+        max-height: 0;
+        -webkit-transition: max-height 0.5s ease-in-out;
+        -moz-transition: max-height 0.5s ease-in-out;
+        -o-transition: max-height 0.5s ease-in-out;
+        transition: max-height 0.5s ease-in-out;
+      }
+
+      .v-slot-menuSubMenuContent.v-slot-open {
+        max-height: 1000px;
+      }
+    }
+
+    .leftMenu:not(.minimal) {
+      overflow: auto;
+    }
+
+    /* Left Menu - Minmal */
+    .leftMenu.minimal {
+      .menuButton {
+        overflow: unset !important;
+      }
+
+      .menuButton .v-icon {
+        width: 100% !important;
+        margin: 0 !important;
+      }
+
+      .menuButton-caption {
+        position: absolute;
+        padding: 12px;
+        margin: -12px 0 0 -100%;
+        height: 26px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.5s, margin-left 0.5s;
+        white-space: nowrap;
+      }
+
+      .menuButton-caption .v-icon {
+        display: none;
+      }
+
+      .menuButton:hover .menuButton-caption {
+        opacity: 1;
+        margin-left: 0;
+        pointer-events: auto;
+      }
+
+      .menuSubMenu .v-slot-menuSubMenuContent {
+        max-height: 1000px !important;
+        overflow: unset !important;
+        position: absolute !important;
+        opacity: 0;
+        margin: 0;
+        pointer-events: none;
+        width: auto !important;
+        transition: visibility 0s 0.5s, opacity 0.5s, margin-left 0.5s;
+        visibility: hidden;
+      }
+
+      .menuSubMenuContent {
+        border-left: 0 !important;
+        margin-left: 0 !important;
+        width: auto !important;
+      }
+
+      .menuSubMenu:hover > .v-slot-subMenuButton .menuButton-caption {
+        opacity: 1;
+        margin-left: 0;
+        pointer-events: auto;
+      }
+
+      .menuSubMenu .v-slot-subMenuButton:hover ~ .v-slot-menuSubMenuContent, .menuSubMenu > .v-slot-menuSubMenuContent:hover {
+        margin-left: 61px;
+        pointer-events: auto;
+        opacity: 1;
+        visibility: visible;
+        transition-delay: 0s;
+      }
+
+      .menuSubMenuContent .v-slot, .menuSubMenuContent .menuButton {
+        width: auto !important;
+        display: block !important;
+      }
+
+      .menuSubMenuContent .v-icon {
+        margin-left: 10px !important;
+        width: 25px !important;
+        position: absolute !important;
+        z-index: 102;
+      }
+
+      .menuSubMenuContent .menuButton-caption {
+        position: relative !important;
+        pointer-events: auto !important;
+        opacity: 1 !important;
+        margin: 0 !important;
+        padding: 0 10px 0 35px !important;
+        z-index: 101;
+        background: transparent !important;
+      }
+    }
+
+    /* Top Menu */
+    .v-slot-topMenu {
+      position: relative;
+      z-index: 101;
+    }
+
+    .topMenu {
+      z-index: 1000;
+
+      .v-slot.v-align-middle {
+        width: auto !important;
+        display: inline-block;
+      }
+
+      .v-slot.v-align-right.v-align-middle {
+        float: right;
+      }
+
+      .menuLabel.labelTitle {
+        padding: 0 15px;
+        width: 250px;
+        text-align: center;
+        font-size: 18px;
+        outline: 0 !important;
+        cursor: pointer !important;
+
+        img {
+          max-height: 23px;
+        }
+      }
+
+      .menuSubMenu {
+        position: relative;
+        height: 100%;
+        display: inline-block;
+
+        .menuSubMenuContent {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          border-top: 1px solid transparent;
+          padding: 0;
+          opacity: 0;
+          z-index: -1;
+          margin-top: -100%;
+          -webkit-transition: margin-top 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+          -moz-transition: margin-top 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+          -o-transition: margin-top 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+          transition: margin-top 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+          pointer-events: none;
+
+          .v-slot {
+            height: auto;
+          }
+
+          .menuSubMenuLabel {
+            display: block;
+            opacity: 0.75;
+            padding: 5px 10px 5px 15px;
+            font-size: 12px;
+          }
+
+          .menuSubMenuButton {
+            display: block;
+            padding: 4px 10px 3px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            background: transparent;
+            -webkit-transition: background 0.3s ease-in-out;
+            -moz-transition: background 0.3s ease-in-out;
+            -o-transition: background 0.3s ease-in-out;
+            transition: background 0.3s ease-in-out;
+          }
+
+          .menuSubMenuHr {
+            height: 1px;
+            margin: 6px 0;
+            overflow: hidden;
+            width: 100%;
+            display: block;
+          }
+
+          .messageBox {
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: 200px;
+
+            .v-slot-created {
+              position: absolute;
+              bottom: 1px;
+              left: 75px;
+              font-size: 9px;
+            }
+          }
+        }
+
+        .menuSubMenuContent.open {
+          pointer-events: auto;
+          margin-top: 0;
+          opacity: 1;
+          z-index: 100;
+        }
+      }
+
+      .menuButton {
+        height: 100%;
+        cursor: pointer;
+        padding: 0 12px;
+        background: transparent;
+        -webkit-transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+        -moz-transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+        -o-transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+        transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+      }
+
+      .menuButton-wrap {
+        display: block;
+        position: relative;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%); /* IE10 is actually unprefixed */
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+      }
+
+      .menuButton.iconRight {
+        .v-icon {
+          float: right;
+        }
+
+        .menuButton-caption {
+          margin-right: 7px;
+          margin-left: 0;
+        }
+      }
+
+      .menuButton.profilView .v-icon {
+        max-height: 23px;
+        border-radius: 50%;
+        margin-left: 5px;
+      }
+
+      .menuButton.captionOutside {
+        .menuButton-wrap {
+          top: 0;
+          height: 100%;
+          transform: unset;
+        }
+
+        .v-icon {
+          display: block;
+          transition: border 0.3s;
+          position: relative;
+          top: 50%;
+          -webkit-transform: translateY(-50%);
+          -moz-transform: translateY(-50%);
+          -ms-transform: translateY(-50%); /* IE10 is actually unprefixed */
+          -o-transform: translateY(-50%);
+          transform: translateY(-50%);
+        }
+
+        .menuButton-caption {
+          .toolTop {
+            position: absolute;
+            z-index: 100;
+            font-size: 10px;
+            line-height: 12px;
+            padding: 2px 5px;
+            border-radius: 6px;
+            top: 8px;
+          }
+
+          .caption {
+            position: absolute;
+            top: 100%;
+            right: -12px;
+            border-top: 1px solid transparent;
+            padding: 5px 15px 7px;
+            opacity: 0;
+            z-index: -1;
+            margin-top: -100%;
+            white-space: nowrap;
+            -webkit-transition: margin-top 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+            -moz-transition: margin-top 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+            -o-transition: margin-top 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+            transition: margin-top 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+            pointer-events: none;
+          }
+        }
+      }
+
+      .menuButton.captionOutside:hover .menuButton-caption .caption {
+        margin-top: 0;
+        opacity: 1;
+        z-index: 100;
+      }
+    }
+  }
+
+  /* Colors */
+  $dark-color: rgb(66, 66, 66);
+  $white-color: rgb(245, 245, 245);
+
+  /* Content-Background */
+  $white-content-background: rgb(245, 245, 245);
+  $dark-content-background: rgb(83, 83, 83);
+
+  /* Notifications */
+  $white-notification-prio-low-background: rgb(224, 224, 224);
+  $dark-notification-prio-low-background: rgb(53, 53, 53);
+  $notification-prio-medium-background: rgb(0, 96, 100);
+  $notification-prio-high-background: rgb(191, 54, 12);
+  $notification-border-color-opacity: 0.15;
+  $notification-shadow: 0.7;
+  $notification-close-button-hover: rgb(222, 30, 30);
+  $notification-close-button-opacity: 0.5;
+
+  /* Left-Menu */
+  $white-menu-left-background: rgb(238, 238, 238);
+  $dark-menu-left-background: rgb(53, 53, 53);
+  $white-menu-left-shadow: rgb(189, 189, 189);
+  $dark-menu-left-shadow: rgb(0, 0, 0);
+  $menu-left-shadow-opacity: 0.4;
+  $menu-left-button-opacity: 0.5;
+  $white-menu-left-button-hover: rgb(224, 224, 224);
+  $dark-menu-left-button-hover: rgb(33, 33, 33);
+  $menu-left-button-border-hover: rgb(25, 118, 210);
+  $white-menu-left-button-active: rgb(245, 245, 245);
+  $dark-menu-left-button-active: rgb(83, 83, 83);
+  $menu-left-button-border-active: rgb(51, 105, 30);
+  $white-menu-left-sub-menu-border: rgb(224, 224, 224);
+  $dark-menu-left-sub-menu-border: rgb(83, 83, 83);
+  $menu-left-button-tooltip: rgb(25, 118, 210);
+
+  /* Top-Menu */
+  $white-menu-top-background: rgb(224, 224, 224);
+  $white-blue-menu-top-background: rgb(25, 118, 210);
+  $dark-menu-top-background: rgb(33, 33, 33);
+  $white-menu-top-shadow: rgb(189, 189, 189);
+  $dark-menu-top-shadow: rgb(0, 0, 0);
+  $menu-top-shadow-opacity: 0.4;
+  $menu-top-button-hover: rgb(51, 105, 30);
+  $menu-top-button-active: rgb(46, 125, 50);
+  $menu-top-button-border: rgb(100, 221, 23);
+  $menu-top-button-tooltip: rgb(25, 118, 210);
+  $white-blue-menu-top-button-tooltip: rgb(245, 245, 245);
+
+  /* Theme - White */
+  .hybridMenu.design_white {
+    @include hybridMenuThemeBuilder(
+                    $dark-color,
+                    $white-color,
+                    $white-content-background,
+                    $white-notification-prio-low-background,
+                    $notification-prio-medium-background,
+                    $notification-prio-high-background,
+                    $notification-border-color-opacity,
+                    $notification-shadow,
+                    $notification-close-button-hover,
+                    $notification-close-button-opacity,
+                    $white-menu-left-background,
+                    $white-menu-left-shadow,
+                    $menu-left-shadow-opacity,
+                    $menu-left-button-opacity,
+                    $white-menu-left-button-hover,
+                    $menu-left-button-border-hover,
+                    $white-menu-left-button-active,
+                    $menu-left-button-border-active,
+                    $white-menu-left-sub-menu-border,
+                    $menu-left-button-tooltip,
+                    $white-menu-top-background,
+                    $white-menu-top-shadow,
+                    $menu-top-shadow-opacity,
+                    $menu-top-button-hover,
+                    $menu-top-button-active,
+                    $menu-top-button-border,
+                    $menu-top-button-tooltip);
+  }
+
+  /* Theme - White */
+  .hybridMenu.design_white_blue {
+    @include hybridMenuThemeBuilder(
+                    $dark-color,
+                    $white-color,
+                    $white-content-background,
+                    $white-notification-prio-low-background,
+                    $notification-prio-medium-background,
+                    $notification-prio-high-background,
+                    $notification-border-color-opacity,
+                    $notification-shadow,
+                    $notification-close-button-hover,
+                    $notification-close-button-opacity,
+                    $white-menu-left-background,
+                    $white-menu-left-shadow,
+                    $menu-left-shadow-opacity,
+                    $menu-left-button-opacity,
+                    $white-menu-left-button-hover,
+                    $menu-left-button-border-hover,
+                    $white-menu-left-button-active,
+                    $menu-left-button-border-active,
+                    $white-menu-left-sub-menu-border,
+                    $menu-left-button-tooltip,
+                    $white-blue-menu-top-background,
+                    $white-menu-top-shadow,
+                    $menu-top-shadow-opacity,
+                    $menu-top-button-hover,
+                    $menu-top-button-active,
+                    $menu-top-button-border,
+                    $white-blue-menu-top-button-tooltip);
+  }
+
+  /* Theme - Dark */
+  .hybridMenu.design_dark {
+    @include hybridMenuThemeBuilder(
+                    $dark-color,
+                    $white-color,
+                    $dark-content-background,
+                    $dark-notification-prio-low-background,
+                    $notification-prio-medium-background,
+                    $notification-prio-high-background,
+                    $notification-border-color-opacity,
+                    $notification-shadow,
+                    $notification-close-button-hover,
+                    $notification-close-button-opacity,
+                    $dark-menu-left-background,
+                    $dark-menu-left-shadow,
+                    $menu-left-shadow-opacity,
+                    $menu-left-button-opacity,
+                    $dark-menu-left-button-hover,
+                    $menu-left-button-border-hover,
+                    $dark-menu-left-button-active,
+                    $menu-left-button-border-active,
+                    $dark-menu-left-sub-menu-border,
+                    $menu-left-button-tooltip,
+                    $dark-menu-top-background,
+                    $dark-menu-top-shadow,
+                    $menu-top-shadow-opacity,
+                    $menu-top-button-hover,
+                    $menu-top-button-active,
+                    $menu-top-button-border,
+                    $menu-top-button-tooltip);
+  }
+}

@@ -4,17 +4,14 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 import org.hibernate.validator.constraints.Email;
-import org.springframework.data.domain.Persistable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Data
 @Audited
-public class Customer implements Persistable<Long>{
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -26,6 +23,8 @@ public class Customer implements Persistable<Long>{
     private String email;
     private String birthday;
     private String phone;
+    @Version
+    private Timestamp version;
 
     @Override
     public int hashCode() {
@@ -50,12 +49,6 @@ public class Customer implements Persistable<Long>{
         return customerId.equals(customer.customerId);
     }
 
-    @Override
-    public Long getId() {
-        return customerId;
-    }
-
-    @Override
     public boolean isNew() {
         return customerId == null;
     }
